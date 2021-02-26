@@ -1,0 +1,3 @@
+include ':btc'
+include ':app'
+rootProject.name = "LibBtc"

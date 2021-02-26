@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/black"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="13sp" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/fee"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="查询手续费" />
+
+            <Button
+                android:id="@+id/info"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="查询余额" />
+
+            <Button
+                android:id="@+id/history"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="查询交易记录" />
+
+            <Button
+                android:id="@+id/transaction"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="发起一笔转账" />
+
+            <Button
+                android:id="@+id/transaction_error"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="发起一笔错误转账(FEE)" />
+
+            <Button
+                android:id="@+id/transaction_error2"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="发起一笔错误转账(AMOUNT)" />
+
+            <Button
+                android:id="@+id/close"
+                style="@style/ButtonFill"
+                android:layout_marginTop="8dp"
+                android:text="手动关闭账单" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
