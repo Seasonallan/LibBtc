@@ -17,8 +17,6 @@
  */
 package com.quincysx.crypto.ethereum.solidity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.quincysx.crypto.ethereum.utils.ByteUtil;
 
 import org.spongycastle.util.encoders.Hex;
@@ -44,16 +42,11 @@ public abstract class SolidityType {
         return name;
     }
 
-    /**
-     * The canonical type name (used for the method signature creation)
-     * E.g. 'int' - canonical 'int256'
-     */
-    @JsonValue
+
     public String getCanonicalName() {
         return getName();
     }
 
-    @JsonCreator
     public static SolidityType getType(String typeName) {
         if (typeName.contains("[")) return ArrayType.getType(typeName);
         if ("bool".equals(typeName)) return new BoolType();

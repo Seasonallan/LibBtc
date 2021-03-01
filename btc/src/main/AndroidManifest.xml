@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.library.aitd">
+    package="com.library.btc">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

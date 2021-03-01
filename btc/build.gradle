@@ -30,14 +30,16 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 
-    api "com.cedarsoftware:java-util:1.8.0"
-    api "com.fasterxml.jackson.core:jackson-databind:2.8.5"
-    api 'com.madgag.spongycastle:core:1.58.0.0'
-    api 'com.madgag.spongycastle:prov:1.58.0.0'
-    api 'com.lambdaworks:scrypt:1.4.0'
-    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.5.1'
-    implementation 'net.i2p.crypto:eddsa:0.3.0'
-    compile files('libs/bcprov-jdk15on-1.59.jar')
+    //api "com.cedarsoftware:java-util:1.8.0"
+    //api "com.fasterxml.jackson.core:jackson-databind:2.8.5"
+    // implementation 'net.i2p.crypto:eddsa:0.3.0'
+    // api 'com.lambdaworks:scrypt:1.4.0'
     //implementation 'org.bouncycastle:bcprov-jdk15on:1.59'
+    // implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.5.1'
+    //api 'com.madgag.spongycastle:core:1.58.0.0'
+    //api 'com.madgag.spongycastle:prov:1.58.0.0'
+    compile files('libs/bcprov-jdk15on-1.59.jar')
+    compile files('libs/spongycastle-core-1.58.0.0.jar')
+    compile files('libs/spongycastle-prov-1.58.0.0.jar')
 
 }

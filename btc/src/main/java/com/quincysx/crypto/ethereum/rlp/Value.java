@@ -17,16 +17,16 @@
  */
 package com.quincysx.crypto.ethereum.rlp;
 
-import com.cedarsoftware.util.DeepEquals;
+import com.quincysx.crypto.ethereum.DeepEquals;
 import com.quincysx.crypto.ethereum.utils.ByteUtil;
 
-//import org.ethereum.crypto.HashUtil;
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigInteger;
-
 import java.util.Arrays;
 import java.util.List;
+
+//import org.ethereum.crypto.HashUtil;
 
 /**
  * Class to encapsulate an object and provide utilities for conversion

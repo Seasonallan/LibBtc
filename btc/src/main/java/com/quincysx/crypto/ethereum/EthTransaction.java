@@ -32,10 +32,10 @@ import com.quincysx.crypto.utils.KECCAK256;
 import org.spongycastle.util.BigIntegers;
 import org.spongycastle.util.encoders.Hex;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import static com.cedarsoftware.util.ArrayUtilities.isEmpty;
 import static com.quincysx.crypto.ethereum.utils.ByteUtil.EMPTY_BYTE_ARRAY;
 import static com.quincysx.crypto.ethereum.utils.ByteUtil.ZERO_BYTE_ARRAY;
 
@@ -255,6 +255,12 @@ public class EthTransaction implements Transaction {
     public boolean isParsed() {
         return parsed;
     }
+
+    public static boolean isEmpty(final Object array)
+    {
+        return array == null || Array.getLength(array) == 0;
+    }
+
 
     public byte[] getHash() {
         if (!isEmpty(hash)) return hash;

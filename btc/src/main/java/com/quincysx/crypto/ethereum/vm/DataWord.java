@@ -17,8 +17,6 @@
  */
 package com.quincysx.crypto.ethereum.vm;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.quincysx.crypto.ethereum.ByteArrayWrapper;
 import com.quincysx.crypto.ethereum.utils.ByteUtil;
 import com.quincysx.crypto.ethereum.utils.FastByteComparisons;
@@ -64,7 +62,6 @@ public class DataWord implements Comparable<DataWord> {
         this.data = data.array();
     }
 
-    @JsonCreator
     public DataWord(String data) {
         this(Hex.decode(data));
     }
@@ -337,7 +334,6 @@ public class DataWord implements Comparable<DataWord> {
         this.data = ByteUtil.copyToArray(result.and(MAX_VALUE));
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return Hex.toHexString(data);

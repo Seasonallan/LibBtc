@@ -1,5 +1,5 @@
 # 偷矿手册
-运行app/src/test下的com.library.aitd.ApiWallet_UnitTest单元测试 
+运行app/src/test下的com.library.btc.ApiWallet_UnitTest单元测试 
 坐等D:/FindBtc.txt下的文件出现内容
 财富自由
 

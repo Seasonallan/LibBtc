@@ -9,8 +9,6 @@ import com.quincysx.crypto.bitcoin.BitCoinECKeyPair;
 import com.quincysx.crypto.eos.EOSECKeyPair;
 import com.quincysx.crypto.ethereum.EthECKeyPair;
 
-import org.spongycastle.crypto.digests.MD5Digest;
-import org.spongycastle.jcajce.provider.digest.MD5;
 
 /**
  * @author QuincySx

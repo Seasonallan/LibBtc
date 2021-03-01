@@ -21,10 +21,6 @@ import static java.lang.String.format;
 
 import static com.quincysx.crypto.ethereum.solidity.SolidityType.IntType;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quincysx.crypto.ethereum.solidity.SolidityType;
 import com.quincysx.crypto.ethereum.utils.ByteUtil;
 import com.quincysx.crypto.ethereum.utils.FastByteComparisons;
@@ -48,10 +44,6 @@ import org.spongycastle.util.encoders.Hex;
  * Created by Anton Nashatyrev on 25.08.2015.
  */
 public class CallTransaction {
-
-    private final static ObjectMapper DEFAULT_MAPPER = new ObjectMapper()
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL);
 
     public static EthTransaction createRawTransaction(BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String toAddress,
                                                       BigInteger value, byte[] data) {
@@ -84,13 +76,11 @@ public class CallTransaction {
         return createRawTransaction(nonce, gasPrice, gasLimit, toAddress, value, callData);
     }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Param {
         public Boolean indexed;
         public String name;
         public SolidityType type;
 
-        @JsonGetter("type")
         public String getType() {
             return type.getName();
         }
@@ -224,13 +214,6 @@ public class CallTransaction {
             return formatSignature();
         }
 
-        public static Function fromJsonInterface(String json) {
-            try {
-                return DEFAULT_MAPPER.readValue(json, Function.class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
         public static Function fromSignature(String funcName, String... paramTypes) {
             return fromSignature(funcName, paramTypes, new String[0]);
@@ -259,118 +242,4 @@ public class CallTransaction {
 
     }
 
-    public static class Contract {
-        public Contract(String jsonInterface) {
-            try {
-                functions = new ObjectMapper().readValue(jsonInterface, Function[].class);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public Function getByName(String name) {
-            for (Function function : functions) {
-                if (name.equals(function.name)) {
-                    return function;
-                }
-            }
-            return null;
-        }
-
-        public Function getConstructor() {
-            for (Function function : functions) {
-                if (function.type == FunctionType.constructor) {
-                    return function;
-                }
-            }
-            return null;
-        }
-
-        private Function getBySignatureHash(byte[] hash) {
-            if (hash.length == 4) {
-                for (Function function : functions) {
-                    if (FastByteComparisons.equal(function.encodeSignature(), hash)) {
-                        return function;
-                    }
-                }
-            } else if (hash.length == 32) {
-                for (Function function : functions) {
-                    if (FastByteComparisons.equal(function.encodeSignatureLong(), hash)) {
-                        return function;
-                    }
-                }
-            } else {
-                throw new RuntimeException("Function signature hash should be 4 or 32 bytes length");
-            }
-            return null;
-        }
-
-        /**
-         * Parses function and its arguments from transaction invocation binary data
-         */
-        public Invocation parseInvocation(byte[] data) {
-            if (data.length < 4) throw new RuntimeException("Invalid data length: " + data.length);
-            Function function = getBySignatureHash(Arrays.copyOfRange(data, 0, 4));
-            if (function == null)
-                throw new RuntimeException("Can't find function/event by it signature");
-            Object[] args = function.decode(data);
-            return new Invocation(this, function, args);
-        }
-
-        /**
-         * Parses Solidity Event and its data members from transaction receipt LogInfo
-         */
-        public Invocation parseEvent(LogInfo eventLog) {
-            Function event = getBySignatureHash(eventLog.getTopics().get(0).getData());
-            int indexedArg = 1;
-            if (event == null) return null;
-            List<Object> indexedArgs = new ArrayList<>();
-            List<Param> unindexed = new ArrayList<>();
-            for (Param input : event.inputs) {
-                if (input.indexed) {
-                    indexedArgs.add(input.type.decode(eventLog.getTopics().get(indexedArg++).getData()));
-                    continue;
-                }
-                unindexed.add(input);
-            }
-
-            Object[] unindexedArgs = event.decode(eventLog.getData(), unindexed.toArray(new Param[unindexed.size()]));
-            Object[] args = new Object[event.inputs.length];
-            int unindexedIndex = 0;
-            int indexedIndex = 0;
-            for (int i = 0; i < args.length; i++) {
-                if (event.inputs[i].indexed) {
-                    args[i] = indexedArgs.get(indexedIndex++);
-                    continue;
-                }
-                args[i] = unindexedArgs[unindexedIndex++];
-            }
-            return new Invocation(this, event, args);
-        }
-
-        public Function[] functions;
-    }
-
-    /**
-     * Represents either function invocation with its arguments
-     * or Event instance with its data members
-     */
-    public static class Invocation {
-        public final Contract contract;
-        public final Function function;
-        public final Object[] args;
-
-        public Invocation(Contract contract, Function function, Object[] args) {
-            this.contract = contract;
-            this.function = function;
-            this.args = args;
-        }
-
-        @Override
-        public String toString() {
-            return "[" + "contract=" + contract +
-                    (function.type == FunctionType.event ? ", event=" : ", function=")
-                    + function + ", args=" + Arrays.toString(args) + ']';
-        }
-    }
 }
